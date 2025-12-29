@@ -1,11 +1,16 @@
 package com.example.StudentAttendance.service;
 
+import com.example.StudentAttendance.dto.AttendanceRequest;
+import com.example.StudentAttendance.model.Attendance;
 import com.example.StudentAttendance.model.Student;
+import com.example.StudentAttendance.repository.AttendanceRepo;
 import com.example.StudentAttendance.repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -14,6 +19,8 @@ public class StudentService {
 
     @Autowired
     StudentRepo studentRepo;
+    @Autowired
+    private AttendanceRepo attendanceRepo;
 
     public List<Student> getAllStudents() {
 
@@ -34,4 +41,8 @@ public class StudentService {
         }
 
     }
+
+
+
+
 }

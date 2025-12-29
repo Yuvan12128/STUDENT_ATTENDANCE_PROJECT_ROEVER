@@ -1,13 +1,17 @@
 package com.example.StudentAttendance.controller;
 
+import com.example.StudentAttendance.dto.AttendanceRequest;
+import com.example.StudentAttendance.exception.AttendanceAlreadyMarkedException;
+import com.example.StudentAttendance.model.Attendance;
 import com.example.StudentAttendance.model.Student;
 
+import com.example.StudentAttendance.repository.AttendanceRepo;
+import com.example.StudentAttendance.service.AttendanceService;
 import com.example.StudentAttendance.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +20,9 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    AttendanceService attendanceService;
 
     @GetMapping("students")
     public List<Student> getAllStudents(){
@@ -38,5 +45,23 @@ public class StudentController {
         }
 
     }
+        @PostMapping("/mark")
+        public String mark(@RequestBody AttendanceRequest request){
 
+            attendanceService.markAttendance(request);
+        return "Attendance Marked Successfully.";
+        }
+
+    @RestControllerAdvice
+    public static class GlobalExceptionHandler {
+
+        @ExceptionHandler(AttendanceAlreadyMarkedException.class)
+        public ResponseEntity<String> handleAttendanceAlreadyMarked(
+                AttendanceAlreadyMarkedException ex) {
+
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT) // 409
+                    .body(ex.getMessage());
+        }
+    }
 }
