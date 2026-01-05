@@ -64,4 +64,12 @@ public class StudentController {
                     .body(ex.getMessage());
         }
     }
+
+
+    @GetMapping("attendance/students/{rollNo}")
+    public List<Attendance> getAttendanceByStudent(@PathVariable String rollNo){
+
+        return attendanceService.getAttendanceByStudent(rollNo);
+    }
+
 }

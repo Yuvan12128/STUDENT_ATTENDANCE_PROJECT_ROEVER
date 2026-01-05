@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AttendanceService {
@@ -35,5 +36,12 @@ public class AttendanceService {
         att.setAttTime(LocalDateTime.now());
 
         attendanceRepo.save(att);
+    }
+
+    public List<Attendance> getAttendanceByStudent(String rollNo) {
+
+        Student student = studentRepo.findByRollNo(rollNo).orElseThrow(()-> new RuntimeException("Student not found with roll No : "+rollNo));
+
+        return attendanceRepo.findByStudent(student);
     }
 }
